@@ -1,8 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-
+#include "hotel.h"
+#include "extras.h"
 #define SEPARATOR 30
 /*
 We do need here the 2 as for menu iem and "Enter" key
@@ -14,12 +11,15 @@ TODO: To find work around as if more than 1 char is entered it will overflow the
 
 void SeparetorLine();
 int MenuSelection();
-void MenuAction(short MenuItem);
-
+void MenuAction(int MenuItem);
+void NewCustomer();
+void CheckinCustomer(Customer customer);
 int main (){
 
-short MenuItem = -1;
-//LoadHotel();
+int MenuItem = -1;
+
+Hotel h = LoadData();
+
 while (MenuItem != 9)
 {
 MenuItem = MenuSelection();
@@ -44,10 +44,9 @@ int MenuSelection(){
 	printf(" 3. Checkin\n");
 	printf(" 4. Checkout\n");
 	printf(" 9. Quit\n\n");
-    _flushall();
-	gets(item);
-    SelectionItem = atoi(item);
 
+    scanf ("%d",&SelectionItem);
+    
 
 	return SelectionItem;
 }
@@ -60,32 +59,73 @@ void SeparetorLine(){
 }
 
 
-void MenuAction(short MenuItem){
-switch(MenuItem)
+void MenuAction(int MenuItem){
+	int customerid=0;
+	Customer customer;
+    switch(MenuItem)
 	{
 	case 1: 
-//		AddCustomer();
+		NewCustomer();
 		break;
 
 	case 2: 
-//		GetStatus();
+    	PrintStatus();
 		break;
 
 	case 3: 
-//		CheckIn();
+	     printf("Enter CustomerID\n");
+		 scanf("%d",customerid);
+		 customer = GetCustomer(customerid);
+	     CheckinCustomer(customer);
+		 break;
 
 	case 4: 
-//		CheckOut();
-
+   //      printf("Enter CustomerID\n");
+		 //scanf("%d",customerid);
+	  //    CheckOut();
+		break;
 	case 9: 
 		return;
     
-	case 0:
-		printf("If you didn't enter %d, than probably you used character insted integer, try again\n", MenuItem);
 	default:
 		printf("Bad guess, %d is not in the Menu, try again :)\n",MenuItem);
+		break;
 	}
 
 }
 
+void NewCustomer(){
 
+
+Customer customer = AddCustomer();
+
+//Getting info about new customer
+
+
+//adding data to the room and checking him in the room
+if(BoolQuestion("Do you want to checkin?"))
+ CheckinCustomer(customer);
+
+
+}
+
+void CheckinCustomer (Customer customer){
+room NewRoom = AddRoom(customer.ID);
+int Checkin, Checkout;
+bool Jacuzzi,  BabyBed,  ExtraFood;
+
+
+printf("Please enter Checkin date:\n");
+scanf("%d", &Checkin);
+printf("Please enter Checkout date:\n");
+scanf("%d", &Checkout);
+
+Jacuzzi = BoolQuestion("Do you want Jacuzzi?");
+BabyBed =  BoolQuestion("Do you need a bed for a baby?");
+if (NewRoom.breakfast) // We want to ask about extra food only when they ordered breakfast
+   ExtraFood =  BoolQuestion("Do you want any extra food?");
+
+
+//Making Reservation
+LoadReservation(Checkin, Checkout, NewRoom, customer, Jacuzzi, BabyBed, ExtraFood);
+}

@@ -175,6 +175,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\extras.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hotel.cpp"
 				>
 			</File>
@@ -198,6 +202,10 @@
 			>
 			<File
 				RelativePath=".\customer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\extras.h"
 				>
 			</File>
 			<File

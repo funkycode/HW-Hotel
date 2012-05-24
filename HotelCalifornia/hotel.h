@@ -1,15 +1,16 @@
-#include "room.h"
+#include "reservation.h"
 
-#define FLOORS 9
-#define ROOMS 12  //this one per floor
+
 
 typedef struct 
 {
-	Room room[FLOORS][ROOMS];
+	room rooms[FLOORS][ROOMS];
 } Hotel;
 
 void InitializeHotel();
 void PrintStatus();
-void LoadData();
+Hotel LoadData();
+Hotel CreateHotel();
+Hotel LoadHotelFromDisk();
 
 
